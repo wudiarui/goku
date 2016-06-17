@@ -31,6 +31,8 @@ public abstract class BaseHBaseDriver {
 
     private Configuration configuration;
 
+    private Job job;
+
     public BaseHBaseDriver() {
         Properties properties = new Properties();
         InputStream inputStream = this.getClass().getResourceAsStream("classpath: hbase_conf.properties");
@@ -62,7 +64,6 @@ public abstract class BaseHBaseDriver {
             return;
         }
 
-        Job job;
         for (BaseHBaseModel model : models) {
             if (model.getJob() == null) {
                 job = Job.getInstance(configuration, model.getJobName());
@@ -89,7 +90,6 @@ public abstract class BaseHBaseDriver {
      * @throws ClassNotFoundException
      */
     public void run(final BaseHBaseModel models[]) throws IOException, InterruptedException, ClassNotFoundException {
-        Job job;
         for (BaseHBaseModel model : models) {
             job = model.getJob();
             /*设置Mapper*/
@@ -129,5 +129,13 @@ public abstract class BaseHBaseDriver {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         configuration.set("hbase.zookeeper.quorum", hbaseZookeeperQuorum);
+    }
+
+    public float getMapperProgress() throws IOException {
+        return this.job.mapProgress();
+    }
+
+    public boolean isSuccess() throws IOException {
+        return this.job.isSuccessful();
     }
 }

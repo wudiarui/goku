@@ -17,7 +17,7 @@ import org.apache.hadoop.mapreduce.Job;
  *
  * @author jerry
  */
-public abstract class BaseHBaseModel {
+public class BaseHBaseModel {
 
     private Job job;
     private String jobName;
@@ -80,6 +80,7 @@ public abstract class BaseHBaseModel {
         this.job = job;
         this.jobName = jobName;
         this.jarClass = jarClass;
+        this.inputFormatClass = inputFormatClass;
         this.inTableName = inTableName;
         this.scan = scan;
         this.mapperClass = mapperClass;
